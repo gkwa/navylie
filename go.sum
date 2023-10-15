@@ -1,9 +1,5 @@
-github.com/taylormonacelli/ashpalm v0.0.1 h1:ToW0Nfp7R/ghNN/mfrtNfIYM/Jktq2HLJws8msO2O88=
-github.com/taylormonacelli/ashpalm v0.0.1/go.mod h1:uX3eFmHfUeCgCwilqBytUd0iXZysgDwA2OGaPbrVMAo=
 github.com/taylormonacelli/ashpalm v0.0.3 h1:WCOMIm6z50kVlwx2K4BTR2WBvyRFavnFswcsjs0U6+w=
 github.com/taylormonacelli/ashpalm v0.0.3/go.mod h1:/DuYUuHQR2sSftqO7pe1rF49iGtwdMB03mrLpZlHUDs=
-github.com/taylormonacelli/forestfish v0.0.6 h1:a9CACQitpa/FepW7W3yaZdA/3Jd/3di0i6jpAnMDSv8=
-github.com/taylormonacelli/forestfish v0.0.6/go.mod h1:/r1GlaTaaRRtK+SzKz7pjRKmhl/9h1aiRNr2yJOoVm8=
 github.com/taylormonacelli/forestfish v0.0.8 h1:Oy7Y1qO0rYOw1aRgu+Ddzh/66IxXVTJP+1Vdjq4+Y8E=
 github.com/taylormonacelli/forestfish v0.0.8/go.mod h1:/r1GlaTaaRRtK+SzKz7pjRKmhl/9h1aiRNr2yJOoVm8=
 github.com/taylormonacelli/goldbug v0.0.5 h1:7PplDdbe1ra+2XbLIS4kReVXmf0kSyOQoM1xicSH4H0=

@@ -1,11 +1,13 @@
-* My Project
+Go scafolding/project generator.
 
-This is a description of my project.
+Usage:
+#+begin_example
+go install github.com/rogpeppe/go-internal/cmd/txtar-x@latest
+navylie -v --dir mytest
+cd mytest
+make
+./mytest -v
+#+end_example
 
-** Installation
-
-To install my project, run this command: go install myproject
-
-** Usage
-
-To use my project, run this command: myproject
+Template comes from here:
+https://raw.githubusercontent.com/taylormonacelli/navylie/master/templates/1.txtar

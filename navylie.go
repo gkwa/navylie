@@ -1,55 +1,38 @@
 package navylie
 
 import (
-	"bytes"
 	"log/slog"
 	"os/exec"
 	"path/filepath"
+
+	"github.com/taylormonacelli/ashpalm"
 )
 
 func Main(outDir string) {
 	renderTemplate(outDir)
 
-	y, err := filepath.Abs(outDir)
+	txtarDir, err := filepath.Abs(outDir)
 	if err != nil {
-		slog.Error("stuff", "path", y)
+		slog.Error("filepath.abs", "path", txtarDir, "error", err.Error())
 	}
 
-	txtarDir := y
 	runTxtar(txtarDir)
 	runGoModTidy(txtarDir)
 }
 
 func runGoModTidy(txtarDir string) {
 	cmd := exec.Command("go", "mod", "tidy")
-	cmd.Dir = txtarDir
+	cwd := txtarDir
 
-	stdErrLog := "error-tidy.txt"
-	stdOutLog := "output-tidy.txt"
+	code, outStr, errStr := ashpalm.RunCmd(cmd, cwd)
+	slog.Debug("runcmd", "cmd", cmd.String(), "stdout", outStr, "stderr", errStr, "code", code)
+}
 
-	var stdout, stderr bytes.Buffer
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
+func runTxtar(txtarDir string) {
+	txtarPath := filepath.Join(txtarDir, "1-rendered.txtar")
+	cmd := exec.Command("txtar-x", txtarPath)
 
-	slog.Debug("running command", "cmd", cmd.String(), "cwd", txtarDir)
-	err := cmd.Run()
-	if err != nil {
-		slog.Error("error running command", "error", err.Error())
-	}
-
-	outStr, errStr := stdout.String(), stderr.String()
-
-	if stdout.Len() > 0 {
-		f := createFile(stdOutLog)
-		defer closeFile(f)
-
-		f.WriteString(outStr)
-	}
-
-	if stderr.Len() > 0 {
-		f := createFile(stdErrLog)
-		defer closeFile(f)
-
-		f.WriteString(errStr)
-	}
+	cwd := txtarDir
+	code, outStr, errStr := ashpalm.RunCmd(cmd, cwd)
+	slog.Debug("runcmd", "cmd", cmd.String(), "stdout", outStr, "stderr", errStr, "code", code)
 }

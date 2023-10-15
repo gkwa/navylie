@@ -1,0 +1,89 @@
+-- Makefile --
+BIN := {{ .ModuleName }}
+
+GOPATH := $(shell go env GOPATH)
+GO_FILES := $(shell find . -name "*.go")
+GO_DEPS := $(shell find . -name go.mod -o -name go.sum)
+
+$(BIN): $(GO_FILES) $(GO_DEPS)
+	$(MAKE) pretty
+	go build -o $(BIN) cmd/main.go
+
+test: $(BIN)
+	./$(BIN) --verbose
+.PHONY: test
+
+pretty: $(GO_FILES)
+	gofumpt -w $^
+.PHONY: pretty
+
+install: $(GOPATH)/bin/$(BIN)
+.PHONY: install
+
+$(GOPATH)/bin/$(BIN): $(BIN)
+	mv $(BIN) $(GOPATH)/bin/$(BIN)
+
+clean:
+	rm -f $(BIN)
+.PHONY: clean
+-- README.org --
+* {{ .ModuleName }}
+
+This is a description of my {{ .ModuleName }}.
+
+** Usage
+
+To use my project, run this command: myproject
+-- cmd/main.go --
+package main
+
+import (
+	"flag"
+	"log/slog"
+
+	"github.com/taylormonacelli/goldbug"
+	"github.com/taylormonacelli/{{ .ModuleName }}"
+)
+
+var (
+	verbose   bool
+	logFormat string
+)
+
+func main() {
+	flag.BoolVar(&verbose, "verbose", false, "Enable verbose output")
+	flag.BoolVar(&verbose, "v", false, "Enable verbose output (shorthand)")
+
+	flag.StringVar(&logFormat, "log-format", "", "Log format (text or json)")
+
+	flag.Parse()
+
+	if verbose || logFormat != "" {
+		if logFormat == "json" {
+			goldbug.SetDefaultLoggerJson(slog.LevelDebug)
+		} else {
+			goldbug.SetDefaultLoggerText(slog.LevelDebug)
+		}
+	}
+
+	{{ .ModuleName }}.Main()
+}
+-- go.mod --
+module github.com/taylormonacelli/{{ .ModuleName }}
+-- {{ .ModuleName }}.code-workspace --
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}
+-- {{ .ModuleName }}.go --
+package {{ .ModuleName }}
+
+import "log/slog"
+
+func Main() {
+	slog.Debug("{{ .ModuleName }}", "test", true)
+}

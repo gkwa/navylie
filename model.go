@@ -1,5 +1,6 @@
 package navylie
 
 type Data struct {
-	ModuleName string
+	ModuleName     string
+	GithubUsername string
 }

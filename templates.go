@@ -4,39 +4,34 @@ import (
 	"html/template"
 	"log/slog"
 	"os"
-	"path/filepath"
+
+	"github.com/taylormonacelli/coalfoot"
 )
 
-func renderTemplate(outputDir string) {
+func renderTemplate(tpl *coalfoot.TxtarTemplate, userSpecifiedDirectory, userModuleName string) {
 	data := Data{
-		ModuleName: filepath.Base(outputDir),
+		ModuleName:     userModuleName,
+		GithubUsername: "taylormonacelli",
 	}
 
-	templatePath := "/tmp/navylie/templates/1.txtar"
-	fname := "1-rendered.txtar"
+	tpl.FetchIfNotFound()
 
-	fetchTemplateToPath(templatePath)
-
-	tmpl, err := template.ParseFiles(templatePath)
+	tmpl, err := template.ParseFiles(tpl.LocalPathUnrendered)
 	if err != nil {
-		slog.Error("parseFiles", "path", templatePath, "error", err.Error())
+		slog.Error("parseFiles", "path", tpl.LocalPathUnrendered, "error", err.Error())
 		return
 	}
 
-	outPath := filepath.Join(outputDir, fname)
-
-	os.MkdirAll(outputDir, 0o755)
-
-	outputFile, err := os.Create(outPath)
+	outputFile, err := os.Create(tpl.LocalPathRendered)
 	if err != nil {
-		slog.Error("create file", "path", outPath, "error", err.Error())
+		slog.Error("create file", "path", tpl.LocalPathRendered, "error", err.Error())
 		return
 	}
 	defer outputFile.Close()
 
 	err = tmpl.Execute(outputFile, data)
 	if err != nil {
-		slog.Error("template execute", "path", outPath, "error", err.Error())
+		slog.Error("template execute", "path", tpl.LocalPathUnrendered, "error", err.Error())
 		return
 	}
 }

@@ -41,8 +41,8 @@ import (
 	"flag"
 	"log/slog"
 
-	"github.com/taylormonacelli/goldbug"
-	"github.com/taylormonacelli/{{ .ModuleName }}"
+	"github.com/{{ .GithubUsername }}/goldbug"
+	"github.com/{{ .GithubUsername }}/{{ .ModuleName }}"
 )
 
 var (
@@ -69,7 +69,7 @@ func main() {
 	{{ .ModuleName }}.Main()
 }
 -- go.mod --
-module github.com/taylormonacelli/{{ .ModuleName }}
+module github.com/{{ .GithubUsername }}/{{ .ModuleName }}
 -- {{ .ModuleName }}.code-workspace --
 {
 	"folders": [

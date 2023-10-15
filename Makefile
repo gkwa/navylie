@@ -9,7 +9,7 @@ $(BIN): $(GO_FILES) $(GO_DEPS)
 	go build -o $(BIN) cmd/main.go
 
 test: $(BIN)
-	./$(BIN) --verbose
+	./$(BIN) -v -dir myproject
 .PHONY: test
 
 pretty: $(GO_FILES)
@@ -24,4 +24,5 @@ $(GOPATH)/bin/$(BIN): $(BIN)
 
 clean:
 	rm -f $(BIN)
+	rm -rf myproject
 .PHONY: clean

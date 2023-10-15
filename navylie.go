@@ -3,7 +3,6 @@ package navylie
 import (
 	"bytes"
 	"log/slog"
-	"os"
 	"os/exec"
 	"path/filepath"
 )
@@ -22,18 +21,18 @@ func Main(outDir string) {
 }
 
 func runGoModTidy(txtarDir string) {
-	var err error
-
 	cmd := exec.Command("go", "mod", "tidy")
 	cmd.Dir = txtarDir
 
-	slog.Debug("running command", "cmd", cmd.String(), "cwd", txtarDir)
+	stdErrLog := "error-tidy.txt"
+	stdOutLog := "output-tidy.txt"
 
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 
-	err = cmd.Run()
+	slog.Debug("running command", "cmd", cmd.String(), "cwd", txtarDir)
+	err := cmd.Run()
 	if err != nil {
 		slog.Error("error running command", "error", err.Error())
 	}
@@ -41,35 +40,16 @@ func runGoModTidy(txtarDir string) {
 	outStr, errStr := stdout.String(), stderr.String()
 
 	if stdout.Len() > 0 {
-		path := "output-tidy.txt"
-		outputFile, err := os.Create(path)
-		if err != nil {
-			slog.Error("error creating output file", "path", path, "error", err.Error())
-			return
-		}
-		defer outputFile.Close()
+		f := createFile(stdOutLog)
+		defer closeFile(f)
 
-		_, err = outputFile.WriteString(outStr)
-		if err != nil {
-			slog.Error("error writing to output file", "path", path, "error", err.Error())
-			return
-		}
-
+		f.WriteString(outStr)
 	}
 
 	if stderr.Len() > 0 {
-		path := "error-tidy.txt"
-		errorFile, err := os.Create(path)
-		if err != nil {
-			slog.Error("error creating error file", "path", path, "error", err.Error())
-			return
-		}
-		defer errorFile.Close()
+		f := createFile(stdErrLog)
+		defer closeFile(f)
 
-		_, err = errorFile.WriteString(errStr)
-		if err != nil {
-			slog.Error("Error writing to error file: %v\n", err)
-			return
-		}
+		f.WriteString(errStr)
 	}
 }

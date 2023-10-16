@@ -2,7 +2,6 @@ Go scafolding/project generator.
 
 Usage:
 #+begin_example
-go install github.com/rogpeppe/go-internal/cmd/txtar-x@latest
 navylie -v --dir mytest
 cd mytest
 make

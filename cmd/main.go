@@ -40,5 +40,6 @@ func main() {
 		}
 	}
 
-	navylie.Main(dir)
+	code := navylie.Main(dir)
+	os.Exit(code)
 }

@@ -10,9 +10,9 @@ import (
 	"github.com/taylormonacelli/coalfoot"
 )
 
-func Main(userProjectDir string) {
-	txtarTemplate := coalfoot.NewTxtarTemplate()
-	txtarTemplate.FetchFromRemoteIfOld()
+func Main(userProjectDir string) int {
+	tpl := coalfoot.NewTxtarTemplate()
+	tpl.FetchFromRemoteIfOld()
 
 	slog.Debug("user project dir", "dir", userProjectDir)
 
@@ -26,13 +26,18 @@ func Main(userProjectDir string) {
 		GithubUsername: "taylormonacelli",
 	}
 
-	renderTemplate(txtarTemplate, userProjectDir, templateData)
+	renderTemplate(tpl, userProjectDir, templateData)
 
-	slog.Debug("running func", "func", "runTxtar")
-	runTxtar(txtarTemplate.LocalPathRendered, userProjectDirAbs)
+	err = tpl.Extract(userProjectDirAbs)
+	if err != nil {
+		slog.Error("extracting", "error", err.Error())
+		return 1
+	}
 
 	slog.Debug("running func", "func", "runGoModTidy")
 	runGoModTidy(userProjectDirAbs)
+
+	return 0
 }
 
 func runGoModTidy(txtarDir string) {
@@ -40,20 +45,6 @@ func runGoModTidy(txtarDir string) {
 	cwd := txtarDir
 
 	code, outStr, errStr := ashpalm.RunCmd(cmd, cwd)
-	if code != 0 {
-		slog.Error("runcmd", "cmd", cmd.String(), "stdout", outStr, "stderr", errStr, "code", code)
-		os.Exit(1)
-	}
-
-	slog.Debug("runcmd", "cmd", cmd.String(), "stdout", outStr, "stderr", errStr, "code", code)
-}
-
-func runTxtar(txtarPath, userProjectDir string) {
-	cmd := exec.Command("txtar-x", "-C", userProjectDir, txtarPath)
-
-	cwd := filepath.Dir(txtarPath)
-	code, outStr, errStr := ashpalm.RunCmd(cmd, cwd)
-
 	if code != 0 {
 		slog.Error("runcmd", "cmd", cmd.String(), "stdout", outStr, "stderr", errStr, "code", code)
 		os.Exit(1)

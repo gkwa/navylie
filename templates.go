@@ -8,13 +8,8 @@ import (
 	"github.com/taylormonacelli/coalfoot"
 )
 
-func renderTemplate(tpl *coalfoot.TxtarTemplate, userSpecifiedDirectory, userModuleName string) {
-	data := Data{
-		ModuleName:     userModuleName,
-		GithubUsername: "taylormonacelli",
-	}
-
-	tpl.FetchIfNotFound()
+func renderTemplate(tpl *coalfoot.TxtarTemplate, userSpecifiedDirectory string, templateData TemplateData) {
+	tpl.FetchFromRemoteIfOld()
 
 	tmpl, err := template.ParseFiles(tpl.LocalPathUnrendered)
 	if err != nil {
@@ -29,7 +24,7 @@ func renderTemplate(tpl *coalfoot.TxtarTemplate, userSpecifiedDirectory, userMod
 	}
 	defer outputFile.Close()
 
-	err = tmpl.Execute(outputFile, data)
+	err = tmpl.Execute(outputFile, templateData)
 	if err != nil {
 		slog.Error("template execute", "path", tpl.LocalPathUnrendered, "error", err.Error())
 		return

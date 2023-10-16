@@ -38,7 +38,7 @@ This is a description of my {{ .ModuleName }}.
 
 ** Usage
 
-To use my project, run this command: myproject
+To use my project, run this command: ./myproject --verbose
 -- cmd/main.go --
 package main
 
@@ -46,7 +46,7 @@ import (
 	"flag"
 	"log/slog"
 
-	"github.com/{{ .GithubUsername }}/goldbug"
+	"github.com/taylormonacelli/goldbug"
 	"github.com/{{ .GithubUsername }}/{{ .ModuleName }}"
 )
 

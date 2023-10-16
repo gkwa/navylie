@@ -1,6 +1,6 @@
 package navylie
 
-type Data struct {
+type TemplateData struct {
 	ModuleName     string
 	GithubUsername string
 }

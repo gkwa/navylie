@@ -13,8 +13,7 @@ var (
 	verbose   bool
 	logFormat string
 
-	dir    string
-	target string
+	dir string
 )
 
 func main() {

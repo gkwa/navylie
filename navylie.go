@@ -11,8 +11,8 @@ import (
 )
 
 func Main(userProjectDir string) {
-	x := coalfoot.NewTxtarTemplate()
-	x.FetchIfNotFound()
+	txtarTemplate := coalfoot.NewTxtarTemplate()
+	txtarTemplate.FetchFromRemoteIfOld()
 
 	slog.Debug("user project dir", "dir", userProjectDir)
 
@@ -21,11 +21,15 @@ func Main(userProjectDir string) {
 		slog.Error("filepath.abs", "path", userProjectDirAbs, "error", err.Error())
 	}
 
-	userModuleName := filepath.Base(userProjectDirAbs)
-	renderTemplate(x, userProjectDir, userModuleName)
+	templateData := TemplateData{
+		ModuleName:     filepath.Base(userProjectDirAbs),
+		GithubUsername: "taylormonacelli",
+	}
+
+	renderTemplate(txtarTemplate, userProjectDir, templateData)
 
 	slog.Debug("running func", "func", "runTxtar")
-	runTxtar(x.LocalPathRendered, userProjectDirAbs)
+	runTxtar(txtarTemplate.LocalPathRendered, userProjectDirAbs)
 
 	slog.Debug("running func", "func", "runGoModTidy")
 	runGoModTidy(userProjectDirAbs)

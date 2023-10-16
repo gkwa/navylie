@@ -2,8 +2,13 @@
 BIN := {{ .ModuleName }}
 
 GOPATH := $(shell go env GOPATH)
-GO_FILES := $(shell find . -name "*.go")
-GO_DEPS := $(shell find . -name go.mod -o -name go.sum)
+ifeq ($(OS),Windows_NT)
+    GO_FILES := $(shell dir /S /B *.go)
+	GO_DEPS := $(shell dir /S /B go.mod go.sum)
+else
+    GO_FILES := $(shell find . -name '*.go')
+	GO_DEPS := $(shell find . -name go.mod -o -name go.sum)
+endif
 
 $(BIN): $(GO_FILES) $(GO_DEPS)
 	$(MAKE) pretty

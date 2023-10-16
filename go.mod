@@ -1,11 +1,13 @@
 module github.com/taylormonacelli/navylie
 
-go 1.21.1
+go 1.21
+
+toolchain go1.21.1
 
 require (
-	github.com/taylormonacelli/ashpalm v0.0.3
-	github.com/taylormonacelli/coalfoot v0.0.1
-	github.com/taylormonacelli/goldbug v0.0.5
+	github.com/taylormonacelli/ashpalm v0.0.4
+	github.com/taylormonacelli/coalfoot v0.0.2
+	github.com/taylormonacelli/goldbug v0.0.6
 )
 
-require github.com/taylormonacelli/forestfish v0.0.8 // indirect
+require github.com/taylormonacelli/forestfish v0.0.9 // indirect

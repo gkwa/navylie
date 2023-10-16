@@ -45,9 +45,9 @@ func Main(userProjectDir string) int {
 
 func runGoModTidy(projectDir string) error {
 	cmd := exec.Command("go", "mod", "tidy")
-	cwd := projectDir
+	cmd.Dir = projectDir
 
-	code, outStr, errStr := ashpalm.RunCmd(cmd, cwd)
+	code, outStr, errStr := ashpalm.RunCmd(cmd)
 	if code != 0 {
 		slog.Error("runcmd", "cmd", cmd.String(), "stdout", outStr, "stderr", errStr, "code", code)
 		return fmt.Errorf("%s had unexpected exit code %d with error %s", cmd.String(), code, errStr)

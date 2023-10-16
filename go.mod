@@ -2,8 +2,6 @@ module github.com/taylormonacelli/navylie
 
 go 1.21
 
-toolchain go1.21.1
-
 require (
 	github.com/taylormonacelli/ashpalm v0.0.4
 	github.com/taylormonacelli/coalfoot v0.0.2

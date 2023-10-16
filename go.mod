@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/taylormonacelli/ashpalm v0.0.5
-	github.com/taylormonacelli/coalfoot v0.0.6
+	github.com/taylormonacelli/coalfoot v0.0.7
 	github.com/taylormonacelli/goldbug v0.0.6
 )
 

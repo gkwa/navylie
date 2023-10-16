@@ -1,8 +1,8 @@
 package navylie
 
 import (
+	"fmt"
 	"log/slog"
-	"os"
 	"os/exec"
 	"path/filepath"
 
@@ -35,20 +35,25 @@ func Main(userProjectDir string) int {
 	}
 
 	slog.Debug("running func", "func", "runGoModTidy")
-	runGoModTidy(userProjectDirAbs)
+	err = runGoModTidy(userProjectDirAbs)
+	if err != nil {
+		return 1
+	}
 
 	return 0
 }
 
-func runGoModTidy(txtarDir string) {
+func runGoModTidy(projectDir string) error {
 	cmd := exec.Command("go", "mod", "tidy")
-	cwd := txtarDir
+	cwd := projectDir
 
 	code, outStr, errStr := ashpalm.RunCmd(cmd, cwd)
 	if code != 0 {
 		slog.Error("runcmd", "cmd", cmd.String(), "stdout", outStr, "stderr", errStr, "code", code)
-		os.Exit(1)
+		return fmt.Errorf("%s had unexpected exit code %d", cmd.String(), code)
 	}
 
 	slog.Debug("runcmd", "cmd", cmd.String(), "stdout", outStr, "stderr", errStr, "code", code)
+
+	return nil
 }

@@ -50,7 +50,7 @@ func runGoModTidy(projectDir string) error {
 	code, outStr, errStr := ashpalm.RunCmd(cmd, cwd)
 	if code != 0 {
 		slog.Error("runcmd", "cmd", cmd.String(), "stdout", outStr, "stderr", errStr, "code", code)
-		return fmt.Errorf("%s had unexpected exit code %d", cmd.String(), code)
+		return fmt.Errorf("%s had unexpected exit code %d with error %s", cmd.String(), code, errStr)
 	}
 
 	slog.Debug("runcmd", "cmd", cmd.String(), "stdout", outStr, "stderr", errStr, "code", code)

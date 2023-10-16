@@ -72,7 +72,8 @@ func main() {
 		}
 	}
 
-	{{ .ModuleName }}.Main()
+	code := {{ .ModuleName }}.Main()
+	os.Exit(code)
 }
 -- go.mod --
 module github.com/{{ .GithubUsername }}/{{ .ModuleName }}
@@ -92,6 +93,7 @@ import (
 	"log/slog"
 )
 
-func Main() {
+func Main() int {
 	slog.Debug("{{ .ModuleName }}", "test", true)
+	return 0
 }

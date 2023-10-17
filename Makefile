@@ -10,6 +10,7 @@ $(BIN): $(GO_FILES) $(GO_DEPS)
 
 test: $(BIN)
 	./$(BIN) -v -dir myproject
+	$(MAKE) -C myproject test
 .PHONY: test
 
 pretty: $(GO_FILES)

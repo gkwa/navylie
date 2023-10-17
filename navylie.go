@@ -11,20 +11,19 @@ import (
 )
 
 func Main(userProjectDir string) int {
-	tpl := coalfoot.NewTxtarTemplate()
-	tpl.FetchFromRemoteIfOld()
-
-	slog.Debug("user project dir", "dir", userProjectDir)
-
 	userProjectDirAbs, err := filepath.Abs(userProjectDir)
 	if err != nil {
 		slog.Error("filepath.abs", "path", userProjectDirAbs, "error", err.Error())
 	}
+	slog.Debug("user project dir", "dir", userProjectDirAbs)
 
 	templateData := TemplateData{
 		ModuleName:     filepath.Base(userProjectDirAbs),
 		GithubUsername: "taylormonacelli",
 	}
+
+	tpl := coalfoot.NewTxtarTemplate()
+	tpl.FetchFromRemoteIfOld()
 
 	renderTemplate(tpl, userProjectDir, templateData)
 

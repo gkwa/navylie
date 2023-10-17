@@ -98,5 +98,6 @@ import (
 
 func Main() int {
 	slog.Debug("{{ .ModuleName }}", "test", true)
+
 	return 0
 }

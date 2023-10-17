@@ -28,6 +28,7 @@ func Main(userProjectDir string) int {
 
 	renderTemplate(tpl, userProjectDir, templateData)
 
+	slog.Debug("extracting txtar", "path", tpl.LocalPathRendered, "target dir", userProjectDirAbs)
 	err = tpl.Extract(userProjectDirAbs)
 	if err != nil {
 		slog.Error("extracting", "error", err.Error())

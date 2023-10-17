@@ -26,7 +26,7 @@ jobs:
     - name: Build & Test
       run: |
         go install mvdan.cc/gofumpt@latest
-        go build -v
+        go build -v cmd/main.go
         go test ./...
     - name: Run GoReleaser
       uses: goreleaser/goreleaser-action@v4

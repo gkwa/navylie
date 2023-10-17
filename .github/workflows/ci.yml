@@ -25,6 +25,7 @@ jobs:
         go-version: "1.21"
     - name: Build & Test
       run: |
+        go install mvdan.cc/gofumpt@latest
         go build -v
         go test ./...
     - name: Run GoReleaser

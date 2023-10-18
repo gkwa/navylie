@@ -1,0 +1,18 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "cmd_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/taylormonacelli/navylie/cmd",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//:navylie",
+        "@com_github_taylormonacelli_goldbug//:goldbug",
+    ],
+)
+
+go_binary(
+    name = "navylie",
+    embed = [":cmd_lib"],
+    visibility = ["//visibility:public"],
+)

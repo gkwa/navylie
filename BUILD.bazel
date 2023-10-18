@@ -1,0 +1,16 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "navylie",
+    srcs = [
+        "model.go",
+        "navylie.go",
+        "templates.go",
+    ],
+    importpath = "github.com/taylormonacelli/navylie",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_taylormonacelli_ashpalm//:go_default_library",
+        "@com_github_taylormonacelli_coalfoot//:coalfoot",
+    ],
+)

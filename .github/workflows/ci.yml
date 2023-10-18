@@ -26,7 +26,6 @@ jobs:
     - name: Build & Test
       run: |
         go install mvdan.cc/gofumpt@latest
-        go build -v cmd/main.go
         go test ./...
     - name: Run GoReleaser
       uses: goreleaser/goreleaser-action@v4
@@ -35,4 +34,4 @@ jobs:
     - name: Colored Output Test
       if: runner.os == 'Linux'
       shell: script -q -e -c "bash {0}"
-      run: make test
+      run: bazel run //cmd:navylie -- --verbose --dir myproject

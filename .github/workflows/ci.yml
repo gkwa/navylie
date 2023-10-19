@@ -37,7 +37,7 @@ jobs:
       run: |
         bazel run //cmd:navylie -- -- --verbose --dir c:/Windows/Temp/myproject
         cd c:/Windows/Temp/myproject
-        bazel run //cmd:myproject -- -- --verbose
+        bazel --output_base=c:\bazel_base run //cmd:myproject -- -- --verbose
     - name: Test Other
       if: runner.os != 'Windows'
       run: |

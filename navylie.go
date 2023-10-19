@@ -18,8 +18,10 @@ func Main(userProjectDir string) int {
 	slog.Debug("user project dir", "dir", userProjectDirAbs)
 
 	templateData := TemplateData{
-		ModuleName:     filepath.Base(userProjectDirAbs),
-		GithubUsername: "taylormonacelli",
+		ModuleName:          filepath.Base(userProjectDirAbs),
+		GithubUsername:      "taylormonacelli",
+		BazelGazelleVersion: "0.33.0",
+		BazelRulesGo:        "0.42.0",
 	}
 
 	tpl := coalfoot.NewTxtarTemplate()

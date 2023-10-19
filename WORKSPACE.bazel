@@ -32,7 +32,7 @@ go_repository(
     name = "com_github_taylormonacelli_coalfoot",
     importpath = "github.com/taylormonacelli/coalfoot",
     sum = "h1:ibEqOe4xLeB/IbrxhUjs69bx6YAqbycBk/qL7RuvpGc=",
-    version = "v0.0.10",
+    version = "v0.0.11",
 )
 
 go_repository(

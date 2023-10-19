@@ -35,12 +35,12 @@ jobs:
     - name: Test Windows
       if: runner.os == 'Windows'
       run: |
-        bazel run //cmd:navylie -- -- --verbose --dir myproject
-        cd myproject
+        bazel run //cmd:navylie -- -- --verbose --dir c:/Windows/Temp/myproject
+        cd c:/Windows/Temp/myproject
         bazel run //cmd:myproject
     - name: Test Other
       if: runner.os != 'Windows'
       run: |
-        bazel run //cmd:navylie -- --verbose --dir myproject
+        bazel run //cmd:navylie -- --verbose --dir /tmp/myproject
         cd myproject
         bazel run //cmd:myproject

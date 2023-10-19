@@ -32,15 +32,29 @@ jobs:
       uses: goreleaser/goreleaser-action@v4
       with:
         args: release --snapshot --skip-publish --clean
-    - name: Test Windows
+
+    - name: Test Windows 1
       if: runner.os == 'Windows'
       run: |
         bazel run //cmd:navylie -- -- --verbose --dir c:/Windows/Temp/myproject
         cd c:/Windows/Temp/myproject
         bazel --output_base=c:/Windows/Temp/bazel_output_base run //cmd:myproject -- -- --verbose
-    - name: Test Other
+    - name: Test Windows 2
+      if: runner.os == 'Windows'
+      run: |
+        bazel run //cmd:navylie -- -- --verbose --dir c:/Windows/Temp/myproject2
+        cd c:/Windows/Temp/myproject2
+        bazel --output_base=c:/Windows/Temp/bazel_output_base run //cmd:myproject2 -- -- --verbose
+
+    - name: Test Other 1
       if: runner.os != 'Windows'
       run: |
         bazel run //cmd:navylie -- --verbose --dir /tmp/myproject
         cd /tmp/myproject
         bazel run //cmd:myproject -- --verbose
+    - name: Test Other 2
+      if: runner.os != 'Windows'
+      run: |
+        bazel run //cmd:navylie -- --verbose --dir /tmp/myproject2
+        cd /tmp/myproject2
+        bazel run //cmd:myproject2 -- --verbose

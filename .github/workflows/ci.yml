@@ -37,8 +37,8 @@ jobs:
       run: |
         bazel run //cmd:navylie -- -- --verbose --dir c:/Windows/Temp/myproject
         cd c:/Windows/Temp/myproject
-        mkdir c:/bazel_base
-        bazel --output_base=c:\bazel_base run //cmd:myproject -- -- --verbose
+        mkdir c:/Windows/Temp/bazel_output_base
+        bazel --output_base=c:/Windows/Temp/bazel_output_base run //cmd:myproject -- -- --verbose
     - name: Test Other
       if: runner.os != 'Windows'
       run: |

@@ -32,5 +32,10 @@ jobs:
       uses: goreleaser/goreleaser-action@v4
       with:
         args: release --snapshot --skip-publish --clean
-    - name: Test
+    - name: Test Windows
+      if: runner.os == 'Windows'
       run: bazel run //cmd:navylie -- -- --verbose --dir myproject
+    - name: Test Other
+      if: runner.os != 'Windows'
+      run: bazel run //cmd:navylie -- --verbose --dir myproject
+

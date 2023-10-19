@@ -1,0 +1,103 @@
+-- Makefile --
+BIN := {{ .ModuleName }}
+
+GOPATH := $(shell go env GOPATH)
+ifeq ($(OS),Windows_NT)
+    GO_FILES := $(shell dir /S /B *.go)
+    GO_DEPS := $(shell dir /S /B go.mod go.sum)
+    CLEAN_CMD := del
+else
+    GO_FILES := $(shell find . -name '*.go')
+    GO_DEPS := $(shell find . -name go.mod -o -name go.sum)
+    CLEAN_CMD := rm -f
+endif
+
+$(BIN): $(GO_FILES) $(GO_DEPS)
+	$(MAKE) pretty
+	go vet ./...
+	go build -o $(BIN) cmd/main.go
+
+test: $(BIN)
+	./$(BIN) --verbose
+.PHONY: test
+
+pretty: $(GO_FILES)
+	gofumpt -w $^
+.PHONY: pretty
+
+install: $(GOPATH)/bin/$(BIN)
+.PHONY: install
+
+$(GOPATH)/bin/$(BIN): $(BIN)
+	mv $(BIN) $(GOPATH)/bin/$(BIN)
+
+clean:
+	rm -f $(BIN)
+.PHONY: clean
+-- README.org --
+* {{ .ModuleName }}
+
+This is a description of my {{ .ModuleName }}.
+
+** Usage
+
+To use my project, run this command: ./myproject --verbose
+-- cmd/main.go --
+package main
+
+import (
+	"flag"
+	"log/slog"
+	"os"
+
+	"github.com/taylormonacelli/goldbug"
+	"github.com/{{ .GithubUsername }}/{{ .ModuleName }}"
+)
+
+var (
+	verbose   bool
+	logFormat string
+)
+
+func main() {
+	flag.BoolVar(&verbose, "verbose", false, "Enable verbose output")
+	flag.BoolVar(&verbose, "v", false, "Enable verbose output (shorthand)")
+
+	flag.StringVar(&logFormat, "log-format", "", "Log format (text or json)")
+
+	flag.Parse()
+
+	if verbose || logFormat != "" {
+		if logFormat == "json" {
+			goldbug.SetDefaultLoggerJson(slog.LevelDebug)
+		} else {
+			goldbug.SetDefaultLoggerText(slog.LevelDebug)
+		}
+	}
+
+	code := {{ .ModuleName }}.Main()
+	os.Exit(code)
+}
+-- go.mod --
+module github.com/{{ .GithubUsername }}/{{ .ModuleName }}
+-- {{ .ModuleName }}.code-workspace --
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}
+-- {{ .ModuleName }}.go --
+package {{ .ModuleName }}
+
+import (
+	"log/slog"
+)
+
+func Main() int {
+	slog.Debug("{{ .ModuleName }}", "test", true)
+
+	return 0
+}

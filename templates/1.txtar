@@ -1,39 +1,45 @@
--- Makefile --
-BIN := {{ .ModuleName }}
+-- .bazelrc --
+common --enable_bzlmod
+common --experimental_enable_bzlmod
+common --lockfile_mode=off
+build --symlink_prefix=dist/
+query --output=label_kind
+test --test_output=errors
+-- BUILD.bazel --
+load("@rules_go//go:def.bzl", "go_library")
+load("@gazelle//:def.bzl", "gazelle")
 
-GOPATH := $(shell go env GOPATH)
-ifeq ($(OS),Windows_NT)
-    GO_FILES := $(shell dir /S /B *.go)
-    GO_DEPS := $(shell dir /S /B go.mod go.sum)
-    CLEAN_CMD := del
-else
-    GO_FILES := $(shell find . -name '*.go')
-    GO_DEPS := $(shell find . -name go.mod -o -name go.sum)
-    CLEAN_CMD := rm -f
-endif
+gazelle(name = "gazelle")
 
-$(BIN): $(GO_FILES) $(GO_DEPS)
-	$(MAKE) pretty
-	go vet ./...
-	go build -o $(BIN) cmd/main.go
+gazelle(
+    name = "gazelle-update-repos",
+    args = [
+        "-from_file=go.mod",
+        "-to_macro=deps.bzl%go_dependencies",
+        "-prune",
+    ],
+    command = "update-repos",
+)
 
-test: $(BIN)
-	./$(BIN) --verbose
-.PHONY: test
+go_library(
+    name = "{{ .ModuleName }}",
+    srcs = ["{{ .ModuleName }}.go"],
+    importpath = "github.com/taylormonacelli/{{ .ModuleName }}",
+    visibility = ["//visibility:public"],
+)
+-- MODULE.bazel --
+module(
+    name = "{{ .ModuleName }}",
+    repo_name = "com_github_taylormonacelli_{{ .ModuleName }}",
+)
 
-pretty: $(GO_FILES)
-	gofumpt -w $^
-.PHONY: pretty
+bazel_dep(name = "gazelle", version = "0.33.0")
+bazel_dep(name = "rules_go", version = "0.42.0")
 
-install: $(GOPATH)/bin/$(BIN)
-.PHONY: install
+go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
+go_deps.from_file(go_mod = "//:go.mod")
 
-$(GOPATH)/bin/$(BIN): $(BIN)
-	mv $(BIN) $(GOPATH)/bin/$(BIN)
-
-clean:
-	rm -f $(BIN)
-.PHONY: clean
+use_repo(go_deps, "com_github_taylormonacelli_goldbug")
 -- README.org --
 * {{ .ModuleName }}
 
@@ -42,6 +48,25 @@ This is a description of my {{ .ModuleName }}.
 ** Usage
 
 To use my project, run this command: ./myproject --verbose
+-- cmd/BUILD.bazel --
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "cmd_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/taylormonacelli/{{ .ModuleName }}/cmd",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//:{{ .ModuleName }}",
+        "@com_github_taylormonacelli_goldbug//:goldbug",
+    ],
+)
+
+go_binary(
+    name = "cmd",
+    embed = [":cmd_lib"],
+    visibility = ["//visibility:public"],
+)
 -- cmd/main.go --
 package main
 
@@ -51,7 +76,7 @@ import (
 	"os"
 
 	"github.com/taylormonacelli/goldbug"
-	"github.com/{{ .GithubUsername }}/{{ .ModuleName }}"
+	"github.com/taylormonacelli/{{ .ModuleName }}"
 )
 
 var (
@@ -79,7 +104,9 @@ func main() {
 	os.Exit(code)
 }
 -- go.mod --
-module github.com/{{ .GithubUsername }}/{{ .ModuleName }}
+module github.com/taylormonacelli/{{ .ModuleName }}
+
+go 1.21
 -- {{ .ModuleName }}.code-workspace --
 {
 	"folders": [

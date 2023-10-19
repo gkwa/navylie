@@ -32,4 +32,4 @@ jobs:
       with:
         args: release --snapshot --skip-publish --clean
     - name: Test
-      run: bazel run //cmd:navylie -- --verbose --dir myproject
+      run: bazel run //cmd:navylie -- -- --verbose --dir myproject

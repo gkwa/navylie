@@ -12,7 +12,7 @@ go_library(
 )
 
 go_binary(
-    name = "cmd",
+    name = "navylie",
     embed = [":cmd_lib"],
     visibility = ["//visibility:public"],
 )

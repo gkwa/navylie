@@ -42,5 +42,5 @@ jobs:
       if: runner.os != 'Windows'
       run: |
         bazel run //cmd:navylie -- --verbose --dir /tmp/myproject
-        cd myproject
+        cd /tmp/myproject
         bazel run //cmd:myproject

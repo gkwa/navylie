@@ -1,4 +1,17 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@rules_go//go:def.bzl", "go_library")
+load("@gazelle//:def.bzl", "gazelle")
+
+gazelle(name = "gazelle")
+
+gazelle(
+    name = "gazelle-update-repos",
+    args = [
+        "-from_file=go.mod",
+        "-to_macro=deps.bzl%go_dependencies",
+        "-prune",
+    ],
+    command = "update-repos",
+)
 
 go_library(
     name = "navylie",
@@ -10,7 +23,7 @@ go_library(
     importpath = "github.com/taylormonacelli/navylie",
     visibility = ["//visibility:public"],
     deps = [
-        "@com_github_taylormonacelli_ashpalm//:go_default_library",
+        "@com_github_taylormonacelli_ashpalm//:ashpalm",
         "@com_github_taylormonacelli_coalfoot//:coalfoot",
     ],
 )

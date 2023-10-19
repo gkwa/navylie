@@ -24,26 +24,35 @@ load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 go_repository(
     name = "com_github_taylormonacelli_goldbug",
     importpath = "github.com/taylormonacelli/goldbug",
-    tag = "v0.0.6",
+    sum = "h1:2NQnMjAfznHkKh8dKPTUHJqnswgqWrcF/NhOnm4TQRI=",
+    version = "v0.0.6",
 )
 
 go_repository(
     name = "com_github_taylormonacelli_coalfoot",
     importpath = "github.com/taylormonacelli/coalfoot",
-    tag = "v0.0.10",
+    sum = "h1:ibEqOe4xLeB/IbrxhUjs69bx6YAqbycBk/qL7RuvpGc=",
+    version = "v0.0.10",
 )
 
 go_repository(
     name = "com_github_taylormonacelli_ashpalm",
     importpath = "github.com/taylormonacelli/ashpalm",
-    tag = "v0.0.6",
+    sum = "h1:kTBz46CsUFnJmwXzH0o0bXtEK0PQ3tD7pBS1A/CDpxw=",
+    version = "v0.0.6",
 )
 
 go_repository(
     name = "com_github_taylormonacelli_forestfish",
     importpath = "github.com/taylormonacelli/forestfish",
-    tag = "v0.0.9",
+    sum = "h1:EHEkImUR5X/u7OpOSx4M9t51btRABjz0zz0RNphN8A4=",
+    version = "v0.0.9",
 )
+
+load("//:deps.bzl", "go_dependencies")
+
+# gazelle:repository_macro deps.bzl%go_dependencies
+go_dependencies()
 
 go_rules_dependencies()
 

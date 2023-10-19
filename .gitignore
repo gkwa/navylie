@@ -1,2 +1,4 @@
-
-dist/
+dist/*
+reports/*
+bazel-*
+*.bazel.lock

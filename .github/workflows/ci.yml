@@ -34,8 +34,13 @@ jobs:
         args: release --snapshot --skip-publish --clean
     - name: Test Windows
       if: runner.os == 'Windows'
-      run: bazel run //cmd:navylie -- -- --verbose --dir myproject
+      run: |
+        bazel run //cmd:navylie -- -- --verbose --dir myproject
+        cd myproject
+        bazel run //cmd:myproject
     - name: Test Other
       if: runner.os != 'Windows'
-      run: bazel run //cmd:navylie -- --verbose --dir myproject
-
+      run: |
+        bazel run //cmd:navylie -- --verbose --dir myproject
+        cd myproject
+        bazel run //cmd:myproject

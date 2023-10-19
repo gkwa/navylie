@@ -1,4 +1,5 @@
 -- .bazelrc --
+startup --output_base=bazel_out_dir
 common --enable_bzlmod
 common --experimental_enable_bzlmod
 common --lockfile_mode=off

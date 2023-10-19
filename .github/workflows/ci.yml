@@ -11,6 +11,7 @@ name: Build & Test
 jobs:
   build:
     strategy:
+      fail-fast: false # https://github.com/orgs/community/discussions/27192#discussioncomment-3254966
       matrix:
         os:
         - ubuntu-latest

@@ -6,8 +6,8 @@ build --symlink_prefix=dist/
 query --output=label_kind
 test --test_output=errors
 -- BUILD.bazel --
-load("@gazelle//:def.bzl", "gazelle")
 load("@rules_go//go:def.bzl", "go_library")
+load("@gazelle//:def.bzl", "gazelle")
 
 gazelle(name = "gazelle")
 

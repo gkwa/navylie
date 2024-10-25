@@ -31,7 +31,7 @@ jobs:
     - name: Run GoReleaser
       uses: goreleaser/goreleaser-action@v6
       with:
-        args: release --snapshot --skip-publish --clean
+        args: release --snapshot --skip=publish --clean
 
     - name: Test Windows 1
       if: runner.os == 'Windows'
